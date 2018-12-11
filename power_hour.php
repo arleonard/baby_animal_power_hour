@@ -48,6 +48,7 @@ if (is_file($pic)) {
     exec("chown $file_owner {$destination}{$pic_number}.jpg");
     unlink($pic);
     try {
+        $cid = "kitten_$pic_number" . "_" . time();
         $mail = new \PHPMailer();
         $mail->IsSMTP();
         $mail->CharSet   = 'UTF-8';
@@ -62,8 +63,8 @@ if (is_file($pic)) {
         $mail->setFrom($email_from_email, $email_from_name);
         $mail->isHTML(true);
         $mail->Subject = ucfirst($animal) . " Power Hour #$pic_number!";
-        $mail->Body = "<p>Here's your $animal number $pic_number of the week!</p><p>This week's theme is: <b>$theme</b>.</p><p><img src='cid:kitten'></p>";
-        $mail->AddEmbeddedImage($shrunk_pic, 'kitten');
+        $mail->Body = "<p>Here's your $animal number $pic_number of the week!</p><p>This week's theme is: <b>$theme</b>.</p><p><img src='cid:$cid'></p>";
+        $mail->AddEmbeddedImage($shrunk_pic, $cid);
         $mail->send();
     } catch (\phpmailerException $e) {
 
